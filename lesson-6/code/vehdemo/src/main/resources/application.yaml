@@ -1,0 +1,16 @@
+spring:
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/vehicle_db
+
+server:
+  port: 8080
+
+# optional: show an app name
+app:
+  name: Vehicle Management Service
+  version: 1.0.0
+  description: API for managing vehicles
+  maintainer:
+    name: KVIO Technologies
+    email: support@kvio.in

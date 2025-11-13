@@ -1,0 +1,130 @@
+# Compiled class files
+*.class
+
+# Log files
+*.log
+*.log.*
+
+# Package Files
+*.jar
+*.war
+*.nar
+*.ear
+*.zip
+*.tar.gz
+*.rar
+
+# Maven
+target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+dependency-reduced-pom.xml
+buildNumber.properties
+.mvn/timing.properties
+.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
+
+# Gradle
+.gradle
+build/
+!gradle/wrapper/gradle-wrapper.jar
+!**/src/main/**/build/
+!**/src/test/**/build/
+.gradletasknamecache
+
+# IntelliJ IDEA
+.idea/
+*.iws
+*.iml
+*.ipr
+out/
+!**/src/main/**/out/
+!**/src/test/**/out/
+
+# Eclipse
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings/
+.loadpath
+.recommenders
+.metadata
+bin/
+!**/src/main/**/bin/
+!**/src/test/**/bin/
+tmp/
+*.tmp
+*.bak
+*.swp
+*~.nib
+local.properties
+.settings/
+.loadpath
+.recommenders
+
+# NetBeans
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+
+# VS Code
+.vscode/
+
+# Spring Boot
+application-local.properties
+application-local.yml
+application-*.properties
+!application.properties
+application-*.yml
+!application.yml
+*.pid
+*.pid.lock
+
+# H2 Database (if used for testing)
+*.mv.db
+*.trace.db
+
+# HSQLDB
+*.lck
+*.log
+*.script
+
+# Java
+*.ctxt
+.mtj.tmp/
+*.orig
+hs_err_pid*
+replay_pid*
+
+# OS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Kotlin
+*.kotlin_module
+.ktlint
+
+# Generated sources
+generated/
+generated-sources/
+annotations/
+
+# Test coverage
+.nyc_output
+coverage/
+
+# Application logs
+logs/
+*.log.*
