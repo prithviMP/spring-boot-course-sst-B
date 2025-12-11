@@ -1,0 +1,23 @@
+server:
+  port: 8081
+
+spring:
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/rideshare
+  mongodb:
+    transaction-enabled: true
+
+  jackson:
+    serialization:
+      fail-on-empty-beans: false
+
+logging:
+  level:
+    org.springframework.security: INFO
+    org.springframework.data.mongodb.core.MongoTemplate: DEBUG
+    org.example.rideshare: DEBUG
+
+jwt:
+  secret: "THIS_IS_A_SECRET_KEY_CHANGE_IT_IN_PRODUCTION_1234567890"
+  expiration: 86400000   # 24 hours in ms

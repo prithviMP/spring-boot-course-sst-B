@@ -1,0 +1,615 @@
+{
+	"info": {
+		"name": "Rideshare API",
+		"description": "Complete API collection for Rideshare Application - All endpoints with authentication",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "rideshare-api"
+	},
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{jwt_token}}",
+				"type": "string"
+			}
+		]
+	},
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:8081",
+			"type": "string"
+		},
+		{
+			"key": "jwt_token",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "user1_id",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "user2_id",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "driver_id",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "ride1_id",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "ride2_id",
+			"value": "",
+			"type": "string"
+		}
+	],
+	"item": [
+		{
+			"name": "1. Authentication",
+			"item": [
+				{
+					"name": "Register User 1",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200 || pm.response.code === 201) {",
+									"    const response = pm.response.json();",
+									"    pm.collectionVariables.set('user1_id', response.id);",
+									"    console.log('User1 ID saved:', response.id);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"testuser1\",\n    \"password\": \"pass123\",\n    \"role\": \"USER\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/auth/register",
+							"host": ["{{base_url}}"],
+							"path": ["api", "auth", "register"]
+						}
+					}
+				},
+				{
+					"name": "Register User 2",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200 || pm.response.code === 201) {",
+									"    const response = pm.response.json();",
+									"    pm.collectionVariables.set('user2_id', response.id);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"testuser2\",\n    \"password\": \"pass123\",\n    \"role\": \"USER\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/auth/register",
+							"host": ["{{base_url}}"],
+							"path": ["api", "auth", "register"]
+						}
+					}
+				},
+				{
+					"name": "Register Driver",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200 || pm.response.code === 201) {",
+									"    const response = pm.response.json();",
+									"    pm.collectionVariables.set('driver_id', response.id);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"testdriver1\",\n    \"password\": \"pass123\",\n    \"role\": \"DRIVER\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/auth/register",
+							"host": ["{{base_url}}"],
+							"path": ["api", "auth", "register"]
+						}
+					}
+				},
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200) {",
+									"    const response = pm.response.json();",
+									"    pm.collectionVariables.set('jwt_token', response.token);",
+									"    console.log('JWT Token saved:', response.token.substring(0, 50) + '...');",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"testuser1\",\n    \"password\": \"pass123\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/auth/login",
+							"host": ["{{base_url}}"],
+							"path": ["api", "auth", "login"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "2. Core Ride APIs",
+			"item": [
+				{
+					"name": "Create Ride 1",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200 || pm.response.code === 201) {",
+									"    const response = pm.response.json();",
+									"    pm.collectionVariables.set('ride1_id', response.id);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"userId\": \"{{user1_id}}\",\n    \"pickupLocation\": \"Koramangala\",\n    \"dropLocation\": \"MG Road\",\n    \"distanceKm\": 5.5,\n    \"fareAmount\": 150.0\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/rides",
+							"host": ["{{base_url}}"],
+							"path": ["api", "rides"]
+						}
+					}
+				},
+				{
+					"name": "Create Ride 2",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200 || pm.response.code === 201) {",
+									"    const response = pm.response.json();",
+									"    pm.collectionVariables.set('ride2_id', response.id);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"userId\": \"{{user1_id}}\",\n    \"pickupLocation\": \"Indiranagar\",\n    \"dropLocation\": \"Whitefield\",\n    \"distanceKm\": 12.0,\n    \"fareAmount\": 300.0\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/rides",
+							"host": ["{{base_url}}"],
+							"path": ["api", "rides"]
+						}
+					}
+				},
+				{
+					"name": "Accept Ride",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/rides/accept/{{ride1_id}}?driverId={{driver_id}}",
+							"host": ["{{base_url}}"],
+							"path": ["api", "rides", "accept", "{{ride1_id}}"],
+							"query": [
+								{
+									"key": "driverId",
+									"value": "{{driver_id}}"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Complete Ride",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/rides/complete/{{ride1_id}}?actorUserId={{user1_id}}",
+							"host": ["{{base_url}}"],
+							"path": ["api", "rides", "complete", "{{ride1_id}}"],
+							"query": [
+								{
+									"key": "actorUserId",
+									"value": "{{user1_id}}"
+								}
+							]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "3. V1 Query APIs",
+			"item": [
+				{
+					"name": "API 1: Search Rides",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/v1/rides/search?text=kor",
+							"host": ["{{base_url}}"],
+							"path": ["api", "v1", "rides", "search"],
+							"query": [
+								{
+									"key": "text",
+									"value": "kor",
+									"description": "Search text (pickup OR drop location)"
+								}
+							]
+						},
+						"description": "Search rides by pickup OR drop location (case-insensitive regex)"
+					}
+				},
+				{
+					"name": "API 2: Filter by Distance",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/v1/rides/filter-distance?min=5&max=10",
+							"host": ["{{base_url}}"],
+							"path": ["api", "v1", "rides", "filter-distance"],
+							"query": [
+								{
+									"key": "min",
+									"value": "5",
+									"description": "Minimum distance in km"
+								},
+								{
+									"key": "max",
+									"value": "10",
+									"description": "Maximum distance in km"
+								}
+							]
+						},
+						"description": "Filter rides by distance range (min-max)"
+					}
+				},
+				{
+					"name": "API 3: Filter by Date Range",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/v1/rides/filter-date-range?start=2025-12-11&end=2025-12-11",
+							"host": ["{{base_url}}"],
+							"path": ["api", "v1", "rides", "filter-date-range"],
+							"query": [
+								{
+									"key": "start",
+									"value": "2025-12-11",
+									"description": "Start date (YYYY-MM-DD)"
+								},
+								{
+									"key": "end",
+									"value": "2025-12-11",
+									"description": "End date (YYYY-MM-DD)"
+								}
+							]
+						},
+						"description": "Filter rides between date range"
+					}
+				},
+				{
+					"name": "API 4: Sort Rides",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/v1/rides/sort?order=desc",
+							"host": ["{{base_url}}"],
+							"path": ["api", "v1", "rides", "sort"],
+							"query": [
+								{
+									"key": "order",
+									"value": "desc",
+									"description": "Sort order: asc or desc (default: desc)"
+								}
+							]
+						},
+						"description": "Sort rides by fare amount"
+					}
+				},
+				{
+					"name": "API 5: Get User Rides",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/v1/rides/user/{{user1_id}}",
+							"host": ["{{base_url}}"],
+							"path": ["api", "v1", "rides", "user", "{{user1_id}}"]
+						},
+						"description": "Get all rides for a specific user"
+					}
+				},
+				{
+					"name": "API 6: Get User Rides by Status",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/v1/rides/user/{{user1_id}}/status/COMPLETED",
+							"host": ["{{base_url}}"],
+							"path": ["api", "v1", "rides", "user", "{{user1_id}}", "status", "COMPLETED"]
+						},
+						"description": "Get rides for user filtered by status (REQUESTED, ACCEPTED, COMPLETED, CANCELLED)"
+					}
+				},
+				{
+					"name": "API 7: Driver Active Rides",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/v1/driver/{{driver_id}}/active-rides",
+							"host": ["{{base_url}}"],
+							"path": ["api", "v1", "driver", "{{driver_id}}", "active-rides"]
+						},
+						"description": "Get active (ACCEPTED) rides for a driver"
+					}
+				},
+				{
+					"name": "API 8: Filter by Status + Search",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/v1/rides/filter-status?status=ACCEPTED&search=kor",
+							"host": ["{{base_url}}"],
+							"path": ["api", "v1", "rides", "filter-status"],
+							"query": [
+								{
+									"key": "status",
+									"value": "ACCEPTED",
+									"description": "Ride status (REQUESTED, ACCEPTED, COMPLETED, CANCELLED)"
+								},
+								{
+									"key": "search",
+									"value": "kor",
+									"description": "Search text for pickup/drop location"
+								}
+							]
+						},
+						"description": "Filter rides by status AND keyword search (AND + OR combo)"
+					}
+				},
+				{
+					"name": "API 9: Advanced Search",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/v1/rides/advanced-search?search=kor&status=REQUESTED&sort=fareAmount&order=desc&page=0&size=10",
+							"host": ["{{base_url}}"],
+							"path": ["api", "v1", "rides", "advanced-search"],
+							"query": [
+								{
+									"key": "search",
+									"value": "kor",
+									"description": "Optional: Search keyword"
+								},
+								{
+									"key": "status",
+									"value": "REQUESTED",
+									"description": "Optional: Filter by status"
+								},
+								{
+									"key": "sort",
+									"value": "fareAmount",
+									"description": "Optional: Sort field (default: fareAmount)"
+								},
+								{
+									"key": "order",
+									"value": "desc",
+									"description": "Optional: Sort order (asc/desc, default: desc)"
+								},
+								{
+									"key": "page",
+									"value": "0",
+									"description": "Page number (default: 0)"
+								},
+								{
+									"key": "size",
+									"value": "10",
+									"description": "Page size (default: 10)"
+								}
+							]
+						},
+						"description": "Advanced search with multiple criteria + pagination"
+					}
+				},
+				{
+					"name": "API 14: Rides on Date",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/v1/rides/date/2025-12-11",
+							"host": ["{{base_url}}"],
+							"path": ["api", "v1", "rides", "date", "2025-12-11"]
+						},
+						"description": "Get all rides on a specific date (YYYY-MM-DD)"
+					}
+				}
+			]
+		},
+		{
+			"name": "4. V1 Analytics APIs",
+			"item": [
+				{
+					"name": "API 10: Rides per Day",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/v1/analytics/rides-per-day",
+							"host": ["{{base_url}}"],
+							"path": ["api", "v1", "analytics", "rides-per-day"]
+						},
+						"description": "Get count of rides grouped by date (for charts/dashboards)"
+					}
+				},
+				{
+					"name": "API 11: Driver Summary",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/v1/analytics/driver/{{driver_id}}/summary",
+							"host": ["{{base_url}}"],
+							"path": ["api", "v1", "analytics", "driver", "{{driver_id}}", "summary"]
+						},
+						"description": "Get driver statistics: total rides, completed, cancelled, avg distance, total fare"
+					}
+				},
+				{
+					"name": "API 12: User Spending",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/v1/analytics/user/{{user1_id}}/spending",
+							"host": ["{{base_url}}"],
+							"path": ["api", "v1", "analytics", "user", "{{user1_id}}", "spending"]
+						},
+						"description": "Get user spending summary: total completed rides and total fare"
+					}
+				},
+				{
+					"name": "API 13: Status Summary",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/v1/analytics/status-summary",
+							"host": ["{{base_url}}"],
+							"path": ["api", "v1", "analytics", "status-summary"]
+						},
+						"description": "Get count of rides grouped by status"
+					}
+				},
+				{
+					"name": "Core API 6: Driver Earnings",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/analytics/driver/{{driver_id}}/earnings",
+							"host": ["{{base_url}}"],
+							"path": ["api", "analytics", "driver", "{{driver_id}}", "earnings"]
+						},
+						"description": "Get driver earnings focused analytics"
+					}
+				}
+			]
+		}
+	]
+}
+

@@ -1,0 +1,450 @@
+{
+	"info": {
+		"name": "Rideshare API V2 - Live Coding",
+		"description": "V2 APIs for live coding demonstration - Criteria Queries and Aggregations",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "rideshare-api-v2"
+	},
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:8081",
+			"type": "string"
+		},
+		{
+			"key": "user1_id",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "driver_id",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "ride1_id",
+			"value": "",
+			"type": "string"
+		}
+	],
+	"item": [
+		{
+			"name": "1. V2 Query APIs (Criteria-based)",
+			"item": [
+				{
+					"name": "API 1: Search Rides (OR Query)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/v2/rides/search?text=kor",
+							"host": ["{{base_url}}"],
+							"path": ["api", "v2", "rides", "search"],
+							"query": [
+								{
+									"key": "text",
+									"value": "kor",
+									"description": "Search text for pickup or drop location"
+								}
+							]
+						},
+						"description": "Search rides by pickup OR drop location containing text (case-insensitive)"
+					},
+					"response": []
+				},
+				{
+					"name": "API 2: Filter by Distance Range",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/v2/rides/filter-distance?min=5&max=10",
+							"host": ["{{base_url}}"],
+							"path": ["api", "v2", "rides", "filter-distance"],
+							"query": [
+								{
+									"key": "min",
+									"value": "5",
+									"description": "Minimum distance in km"
+								},
+								{
+									"key": "max",
+									"value": "10",
+									"description": "Maximum distance in km"
+								}
+							]
+						},
+						"description": "Filter rides by distance range (gte min and lte max)"
+					},
+					"response": []
+				},
+				{
+					"name": "API 3: Filter by Date Range",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/v2/rides/filter-date-range?start=2025-01-01&end=2025-01-31",
+							"host": ["{{base_url}}"],
+							"path": ["api", "v2", "rides", "filter-date-range"],
+							"query": [
+								{
+									"key": "start",
+									"value": "2025-01-01",
+									"description": "Start date (YYYY-MM-DD)"
+								},
+								{
+									"key": "end",
+									"value": "2025-01-31",
+									"description": "End date (YYYY-MM-DD)"
+								}
+							]
+						},
+						"description": "Filter rides between date range"
+					},
+					"response": []
+				},
+				{
+					"name": "API 4: Sort Rides by Fare",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/v2/rides/sort?order=desc",
+							"host": ["{{base_url}}"],
+							"path": ["api", "v2", "rides", "sort"],
+							"query": [
+								{
+									"key": "order",
+									"value": "desc",
+									"description": "Sort order: asc or desc (default: desc)"
+								}
+							]
+						},
+						"description": "Sort all rides by fare amount (ascending or descending)"
+					},
+					"response": []
+				},
+				{
+					"name": "API 7: Driver Active Rides (AND Query)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/v2/rides/driver/{{driver_id}}/active-rides",
+							"host": ["{{base_url}}"],
+							"path": ["api", "v2", "rides", "driver", "{{driver_id}}", "active-rides"],
+							"variable": [
+								{
+									"key": "driver_id",
+									"value": "{{driver_id}}",
+									"type": "string"
+								}
+							]
+						},
+						"description": "Get active rides (status=ACCEPTED) for a specific driver (AND operator)"
+					},
+					"response": []
+				},
+				{
+					"name": "API 8: Filter Status + Search (AND + OR)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/v2/rides/filter-status?status=COMPLETED&search=kor",
+							"host": ["{{base_url}}"],
+							"path": ["api", "v2", "rides", "filter-status"],
+							"query": [
+								{
+									"key": "status",
+									"value": "COMPLETED",
+									"description": "Ride status (REQUESTED, ACCEPTED, COMPLETED, CANCELLED)",
+									"disabled": false
+								},
+								{
+									"key": "search",
+									"value": "kor",
+									"description": "Search text for pickup or drop location",
+									"disabled": false
+								}
+							]
+						},
+						"description": "Filter rides by status AND (pickup OR drop location contains search text) - Complex AND + OR combination"
+					},
+					"response": []
+				},
+				{
+					"name": "API 8: Filter Status Only",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/v2/rides/filter-status?status=COMPLETED",
+							"host": ["{{base_url}}"],
+							"path": ["api", "v2", "rides", "filter-status"],
+							"query": [
+								{
+									"key": "status",
+									"value": "COMPLETED",
+									"description": "Ride status",
+									"disabled": false
+								},
+								{
+									"key": "search",
+									"value": "",
+									"description": "Search text (optional)",
+									"disabled": true
+								}
+							]
+						},
+						"description": "Filter rides by status only (when search is not provided)"
+					},
+					"response": []
+				},
+				{
+					"name": "API 8: Search Only",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/v2/rides/filter-status?search=kor",
+							"host": ["{{base_url}}"],
+							"path": ["api", "v2", "rides", "filter-status"],
+							"query": [
+								{
+									"key": "status",
+									"value": "",
+									"description": "Ride status (optional)",
+									"disabled": true
+								},
+								{
+									"key": "search",
+									"value": "kor",
+									"description": "Search text",
+									"disabled": false
+								}
+							]
+						},
+						"description": "Search rides only (when status is not provided)"
+					},
+					"response": []
+				},
+				{
+					"name": "API 9: Advanced Search (Complete)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/v2/rides/advanced-search?search=kor&status=COMPLETED&sort=fareAmount&order=desc&page=0&size=10",
+							"host": ["{{base_url}}"],
+							"path": ["api", "v2", "rides", "advanced-search"],
+							"query": [
+								{
+									"key": "search",
+									"value": "kor",
+									"description": "Search text (optional)",
+									"disabled": false
+								},
+								{
+									"key": "status",
+									"value": "COMPLETED",
+									"description": "Ride status (optional)",
+									"disabled": false
+								},
+								{
+									"key": "sort",
+									"value": "fareAmount",
+									"description": "Field to sort by (optional, default: fareAmount)"
+								},
+								{
+									"key": "order",
+									"value": "desc",
+									"description": "Sort order: asc or desc (default: desc)"
+								},
+								{
+									"key": "page",
+									"value": "0",
+									"description": "Page number (default: 0)"
+								},
+								{
+									"key": "size",
+									"value": "10",
+									"description": "Page size (default: 10)"
+								}
+							]
+						},
+						"description": "Advanced search with filtering, sorting, and pagination - Combines all query features"
+					},
+					"response": []
+				},
+				{
+					"name": "API 9: Advanced Search - Simple",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/v2/rides/advanced-search?page=0&size=5",
+							"host": ["{{base_url}}"],
+							"path": ["api", "v2", "rides", "advanced-search"],
+							"query": [
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "size",
+									"value": "5"
+								}
+							]
+						},
+						"description": "Simple pagination only (no filters)"
+					},
+					"response": []
+				}
+			],
+			"description": "Query APIs using Criteria and MongoTemplate"
+		},
+		{
+			"name": "2. V2 Analytics APIs (Aggregation-based)",
+			"item": [
+				{
+					"name": "API 10: Rides Per Day",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/v2/analytics/rides-per-day",
+							"host": ["{{base_url}}"],
+							"path": ["api", "v2", "analytics", "rides-per-day"]
+						},
+						"description": "Count rides grouped by date - Uses GROUP + SORT + PROJECT aggregation"
+					},
+					"response": []
+				},
+				{
+					"name": "API 11: Driver Summary",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/v2/analytics/driver/{{driver_id}}/summary",
+							"host": ["{{base_url}}"],
+							"path": ["api", "v2", "analytics", "driver", "{{driver_id}}", "summary"],
+							"variable": [
+								{
+									"key": "driver_id",
+									"value": "{{driver_id}}",
+									"type": "string"
+								}
+							]
+						},
+						"description": "Get driver statistics: total rides, completed rides, cancelled rides, avg distance, total fare - Uses conditional aggregation"
+					},
+					"response": []
+				},
+				{
+					"name": "API 11: Driver Stats (Alias)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/v2/analytics/driver/{{driver_id}}/stats",
+							"host": ["{{base_url}}"],
+							"path": ["api", "v2", "analytics", "driver", "{{driver_id}}", "stats"],
+							"variable": [
+								{
+									"key": "driver_id",
+									"value": "{{driver_id}}",
+									"type": "string"
+								}
+							]
+						},
+						"description": "Alias for driver summary endpoint"
+					},
+					"response": []
+				},
+				{
+					"name": "API 12: User Spending",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/v2/analytics/user/{{user1_id}}/spending",
+							"host": ["{{base_url}}"],
+							"path": ["api", "v2", "analytics", "user", "{{user1_id}}", "spending"],
+							"variable": [
+								{
+									"key": "user1_id",
+									"value": "{{user1_id}}",
+									"type": "string"
+								}
+							]
+						},
+						"description": "Get user spending: total completed rides and total fare - Uses MATCH + GROUP + PROJECT aggregation"
+					},
+					"response": []
+				},
+				{
+					"name": "API 13: Status Summary",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/v2/analytics/status-summary",
+							"host": ["{{base_url}}"],
+							"path": ["api", "v2", "analytics", "status-summary"]
+						},
+						"description": "Count rides grouped by status - Uses GROUP + SORT + PROJECT aggregation"
+					},
+					"response": []
+				}
+			],
+			"description": "Analytics APIs using Aggregation Pipelines"
+		},
+		{
+			"name": "3. Setup & Helpers",
+			"item": [
+				{
+					"name": "Get User ID (from V1)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/v1/rides/user/{{user1_id}}",
+							"host": ["{{base_url}}"],
+							"path": ["api", "v1", "rides", "user", "{{user1_id}}"]
+						},
+						"description": "Helper: Get rides for a user to find user ID"
+					},
+					"response": []
+				},
+				{
+					"name": "Create Test Ride (V1)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"userId\": \"{{user1_id}}\",\n    \"pickupLocation\": \"Koramangala\",\n    \"dropLocation\": \"MG Road\",\n    \"distanceKm\": 7.5,\n    \"fareAmount\": 250.0\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/rides",
+							"host": ["{{base_url}}"],
+							"path": ["api", "rides"]
+						},
+						"description": "Helper: Create a test ride to populate data for testing"
+					},
+					"response": []
+				}
+			],
+			"description": "Helper endpoints to set up test data"
+		}
+	]
+}
+
