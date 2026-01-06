@@ -1,6 +1,9 @@
 package com.example.rideshare.service;
 
 import org.bson.Document;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.aggregation.*;
@@ -14,6 +17,8 @@ import static org.springframework.data.mongodb.core.aggregation.Aggregation.*;
 @Service
 public class RideAnalyticsService {
 
+    private static final Logger logger = LoggerFactory.getLogger(RideAnalyticsService.class);
+
     private final MongoTemplate mongoTemplate;
 
     public RideAnalyticsService(MongoTemplate mongoTemplate) {
@@ -21,7 +26,14 @@ public class RideAnalyticsService {
     }
 
     // Driver stats: total rides, completed rides, cancelled rides, avg distance, total fare
+    @Cacheable(value = "driverStats" , key = "#driverId")
     public Map<String, Object> getDriverStats(String driverId) {
+
+        logger.warn("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
+        logger.warn("🔥 CACHE MISS - Executing MongoDB Query for Driver: {}", driverId);
+        logger.warn("   → This means the data was NOT in Redis cache");
+        logger.warn("   → Querying MongoDB and storing result in cache for next time");
+        logger.warn("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
 
         MatchOperation match = match(org.springframework.data.mongodb.core.query.Criteria
                 .where("driverId").is(driverId));

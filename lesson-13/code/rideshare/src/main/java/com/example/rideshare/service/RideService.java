@@ -1,9 +1,12 @@
 package com.example.rideshare.service;
 
+import com.example.rideshare.kafka.RideEventProducer;
 import com.example.rideshare.model.Ride;
 import com.example.rideshare.repository.RideRepository;
 import com.example.rideshare.exception.BadRequestException;
 import com.example.rideshare.exception.NotFoundException;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -11,10 +14,18 @@ import org.springframework.transaction.annotation.Transactional;
 public class RideService {
 
     private final RideRepository rideRepo;
+    private final RideRepository rideRepository;
+    private final RideEventProducer rideEventProducer;
 
-    public RideService(RideRepository rideRepo) {
+    public RideService(RideRepository rideRepository
+                       ,RideRepository rideRepo,RideEventProducer rideEventProducer) {
+        this.rideRepository = rideRepository;
         this.rideRepo = rideRepo;
+        this.rideEventProducer = rideEventProducer;
+
     }
+
+
 
     // Create a new ride request by user
     public Ride createRide(String userId,
@@ -37,6 +48,7 @@ public class RideService {
 
     // ACCEPT ride (transactional example)
     @Transactional
+
     public Ride acceptRide(String rideId, String driverId) {
         Ride ride = getRideOrThrow(rideId);
 
@@ -51,6 +63,7 @@ public class RideService {
     }
 
     // COMPLETE ride (could also be transactional)
+    @CacheEvict(value = "driverStats" , allEntries = true)
     @Transactional
     public Ride completeRide(String rideId, String actorUserId) {
         Ride ride = getRideOrThrow(rideId);
@@ -58,6 +71,8 @@ public class RideService {
         if (!"ACCEPTED".equals(ride.getStatus())) {
             throw new BadRequestException("Ride is not in ACCEPTED state");
         }
+
+        rideEventProducer.publishRideCompleted(rideId, actorUserId);
 
         // (Optional) Verify that actorUserId is either userId or driverId
         ride.setStatus("COMPLETED");

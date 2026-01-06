@@ -27,7 +27,7 @@ public class UserService implements UserDetailsService {
     }
 
     public User getByUsername(String username) {
-        return repo.findByUsername(username)
+        return repo.findFirstByUsername(username)
                 .orElseThrow(() -> new NotFoundException("User not found: " + username));
     }
 

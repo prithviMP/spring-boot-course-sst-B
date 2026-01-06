@@ -2,6 +2,19 @@ server:
   port: 8081
 
 spring:
+  kafka:
+    bootstrap-servers: localhost:9092
+
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+
+    consumer:
+      group-id: rideshare-group
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+
   data:
     mongodb:
       uri: mongodb://localhost:27017/rideshare
@@ -21,3 +34,16 @@ logging:
 jwt:
   secret: "THIS_IS_A_SECRET_KEY_CHANGE_IT_IN_PRODUCTION_1234567890"
   expiration: 86400000   # 24 hours in ms
+
+cache:
+  type: redis
+
+redis:
+  host: localhost
+  port: 6379
+
+servlet:
+  multipart:
+    enabled:  true
+    max-file-size: 10MB
+    max-request-size: 10MB

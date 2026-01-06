@@ -35,6 +35,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/auth/**").permitAll()
                         .requestMatchers("/api/v1/**").permitAll()  // Allow v1 APIs for testing
                         .requestMatchers("/api/v2/**").permitAll()  // Allow v2 APIs for testing
+                        .requestMatchers("/api/files/**").permitAll()
                         .requestMatchers("/api/rides/**").permitAll()  // Allow core ride APIs for testing
                         .requestMatchers("/api/analytics/**").permitAll()  // Allow analytics APIs for testing
                         .anyRequest().authenticated())

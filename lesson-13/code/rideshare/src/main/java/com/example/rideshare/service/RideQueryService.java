@@ -2,6 +2,7 @@ package com.example.rideshare.service;
 
 import com.example.rideshare.model.Ride;
 import com.example.rideshare.repository.RideRepository;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -26,7 +27,8 @@ public class RideQueryService {
     }
 
     public List<Ride> getRidesForUser(String userId) {
-        return rideRepo.findByUserId(userId);
+        List<Ride> rides = rideRepo.findByUserId(userId);
+        return rides;
     }
 
     public List<Ride> getRidesForUserByStatus(String userId, String status) {
